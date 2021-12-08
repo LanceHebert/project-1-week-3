@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <form id="formInput">
+      <input
+        class="autocomplete"
+        type="text"
+        placeholder="Coin Ticker Here"
+        id="tickerInput"
+			/>
+			<select id = "weekList" name ="choose week" placeholder="Choose week" >					 
+					<option id="week1">Week1</option>  
+					<option id="week2">Week2</option>  
+					<option id="week3">Week3</option>  
+					<option id="week4">Week4</option>  
+			</select>  
+      <input type="submit" value="Search" />
+    </form>
+    <div id="coins">
+      <!-- coins generated Here -->
+		</div>
+		
+    <script defer src="src/index.js"></script>
+  </body>
+</html>
