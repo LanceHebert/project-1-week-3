@@ -24,34 +24,37 @@ function coinInput() {
   //sandbox is weird and made me put this if to clear an error
   if (form) {
     form.addEventListener("submit", (event) => {
-      event.preventDefault();
+      event.preventDefault();      
       const coinValue = event.target.tickerInput.value;
-      getAPI(coinValue);
-      getWeeklyValue(coinValue);
+      const dropValue = event.target.weekList.value
+      getAPI(coinValue,dropValue);
+      
     });
   }
 }
 
 // replace the "demo" apikey below with your own key from https://www.alphavantage.co/support/#api-key
-function getAPI(coinValue) {
+function getAPI(coinValue,dropValue) {
   // var request = require("request");
   var url = `https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${coinValue}&to_currency=USD&apikey=B3BGRQPX1AOZLTLP`;
-
   // request.get(
-    fetch(url,
-      {
-        url: url,
-        json: true,
-        headers: { "Content-Type": "application/json" }
-      })
-      .then(res => res.json())
-      .then(data=>{
-        console.log(data);
-        renderCoinObj(data);
-      })
-      .catch(err =>console.log(err.message))
-  }
-  
+  fetch(url, {
+    url: url,
+    json: true,
+    headers: { "Content-Type": "application/json" },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      getWeeklyValue(coinValue,dropValue);
+      renderCoinObj(data);
+    })
+    .catch((err) => {
+      console.log(err.message)
+      alert("API Current has reached max use.");
+      return;
+    });
+}
 
 //show the coin chosen
 const coinDiv = document.createElement("div");
@@ -67,8 +70,7 @@ function renderCoinObj(coin) {
   );
   // let counter = 1;
 
-  const ticker =
-    coin["Realtime Currency Exchange Rate"]["1. From_Currency Code"];
+  const ticker = coin["Realtime Currency Exchange Rate"]["1. From_Currency Code"];
   // console.log(counter);
 
   increaseBtn.innerText = "^";
@@ -85,11 +87,14 @@ function renderCoinObj(coin) {
       console.log("this is last value:", currentUsd[currentUsd.length - 1]);
       console.log("this is array:", currentUsd);
       p.textContent = ticker + "  $" + currentUsd[currentUsd.length - 1];
-      return;
+      return
     }
   });
 
+
+
   p.textContent = ticker + "  $" + currentUsd[currentUsd.length - 1];
+  // p.textContent = ticker + "  $" + currentUsd[currentUsd.length - 1];
   coinDiv.append(increaseBtn, p, removeBtn);
   parentCoinDiv.append(coinDiv);
 
@@ -97,47 +102,94 @@ function renderCoinObj(coin) {
   removeBtn.addEventListener("click", (event) => {
     event.target.parentNode.remove();
   });
+
 }
 
-function getWeeklyValue(coinValue) {
+function getWeeklyValue(coinValue,dropValue) {
   // var request = require("request");
   var url = `https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_WEEKLY&symbol=${coinValue}&market=USD&apikey=B3BGRQPX1AOZLTLP`;
   //https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_WEEKLY&symbol=BTC&market=CNY&apikey=demo
   // request.get(
-    fetch(url,
-    {
-      url: url,
-      json: true,
-      headers: { "Content-Type": "application/json" }
+  fetch(url, {
+    url: url,
+    json: true,
+    headers: { "Content-Type": "application/json" },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      renderWeeklyObj(data,dropValue);
     })
-    .then(res => res.json())
-    .then(data=>{
-        console.log(data);
-        renderWeeklyObj(data);
-    })
-    .catch(err =>console.log(err.message))
+    .catch((err) => {
+      console.log(err.message)
+      alert("API Weekly has reached max use.");
+      return;
+    });
 }
 
-    // (err, res, data) => {
-    //   if (err) {
-    //     console.log("Error:", err);
-    //   } else if (res.statusCode !== 200) {
-    //     console.log("Status:", res.statusCode);
-    //   } else {
-        // data is successfully parsed as a JSON object:
-        // renderWeeklyObj(data);
-
-function renderWeeklyObj(coinWeekly) {
+function renderWeeklyObj(coinWeekly,dropValue) {
   const span = document.createElement("span");
-  const divP = coinDiv.querySelector("p");
+  const divP = coinDiv.querySelectorAll("p");
 
-  let currentWeeklyUsd = [];
-  currentWeeklyUsd.push(
-    parseInt(coinWeekly["Time Series (Digital Currency Weekly)"]["2021-12-05"]["4a. close (USD)"],10));
+  const date = new Date()
+  dateFull =  date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + ("0" + date.getDate()).slice(-2);
+  // console.log("this is date",dateFull);
+  let currentWeeklyUsd = [];  
+  const week1 = Object.keys(coinWeekly[Object.keys(coinWeekly)[1]])[1];
+  const week2 = Object.keys(coinWeekly[Object.keys(coinWeekly)[1]])[2];
+  const week3 = Object.keys(coinWeekly[Object.keys(coinWeekly)[1]])[3];
+  const week4 = Object.keys(coinWeekly[Object.keys(coinWeekly)[1]])[4];
+  
+  if(dropValue === "1 week ago")
+  {
+    currentWeeklyUsd.push(coinWeekly["Time Series (Digital Currency Weekly)"][`${week1}`]["4a. close (USD)"])
+    if(currentWeeklyUsd[0])
+    {
+    span.textContent = currentWeeklyUsd[0] 
+    divP[divP.length - 1].append(`   Week of ${week1}:   $`, span);
+    }  
+  }
+  else if(dropValue === "2 weeks ago")
+  {
 
-  span.textContent = parseInt(currentWeeklyUsd, 10);
-  divP.append("   Week of :$", span);
-  console.log(coinWeekly);
+    
+    currentWeeklyUsd.push(coinWeekly["Time Series (Digital Currency Weekly)"][`${week2}`]["4a. close (USD)"])
+    if(currentWeeklyUsd[0])
+    {
+    span.textContent = currentWeeklyUsd[0]
+    divP[divP.length - 1].append(`   Week of ${week2}:   $`, span); 
+    }
+    
+  }  
+  else if(dropValue === "3 weeks ago")
+  {
+
+    
+    currentWeeklyUsd.push(coinWeekly["Time Series (Digital Currency Weekly)"][`${week3}`]["4a. close (USD)"])
+    if(currentWeeklyUsd[0])
+    {
+    span.textContent = currentWeeklyUsd[0] 
+    divP[divP.length - 1].append(`   Week of ${week3}:   $`, span);
+    }
+    
+  }
+  else if(dropValue === "4 weeks ago")
+  {
+
+    
+    currentWeeklyUsd.push(coinWeekly["Time Series (Digital Currency Weekly)"][`${week4}`]["4a. close (USD)"])
+    if(currentWeeklyUsd[0])
+    {
+    span.textContent = currentWeeklyUsd[0]
+    divP[divP.length - 1].append(`   Week of ${week4}:    $`, span); 
+    }    
+  }
+  else
+  {
+    console.log("No week Error");
+  } 
+  
+
 }
 function renderDropdown(weeklyObj) {
   const weeksDrop = document.querySelectorAll(".weeks");
