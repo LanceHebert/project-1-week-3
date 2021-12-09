@@ -18,7 +18,7 @@
 //adds event listener, sends ticker to fetch request.
 
 coinInput();
-
+//****************************************************************** */
 function coinInput() {
   renderDropdown();
   const form = document.querySelector("#formInput");
@@ -27,13 +27,15 @@ function coinInput() {
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const coinValue = event.target.tickerInput.value;
-      const dropValue = event.target.weekList.value;
+      const dropValue = event.target.weekList.value;      
       getAPI(coinValue, dropValue);
+      
     });
   }
 }
 
 // replace the "demo" apikey below with your own key from https://www.alphavantage.co/support/#api-key
+//****************************************************************** */
 function getAPI(coinValue, dropValue) {
   // var request = require("request");
   var url = `https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${coinValue}&to_currency=USD&apikey=6MHEHPP7MI5FPCOG`;
@@ -48,6 +50,7 @@ function getAPI(coinValue, dropValue) {
       console.log(data);
       renderCoinObj(data);
       getWeeklyValue(coinValue, dropValue);
+      
     })
     .catch((err) => {
       console.log(err.message);
@@ -58,7 +61,7 @@ function getAPI(coinValue, dropValue) {
 //show the coin chosen
 
 const coinDiv = document.createElement("div");
-
+//****************************************************************** */
 function renderCoinObj(coin) {
   const firstCoinDiv = document.createElement("div");
   const parentCoinDiv = document.querySelector("#coins");
@@ -67,11 +70,13 @@ function renderCoinObj(coin) {
   const increaseBtn = document.createElement("button");
   const spanCurrent = document.createElement("span");
   const emptyDiv = document.createElement("div");
+  let coinCounter = 1;
+  
 
   p.classList.add("pClass");
   let currentUsd = [];
   currentUsd.push(
-    parseInt(coin["Realtime Currency Exchange Rate"]["5. Exchange Rate"], 10)
+    parseFloat(coin["Realtime Currency Exchange Rate"]["5. Exchange Rate"],10)
   );
   // let counter = 1;
   emptyDiv.classList.add("emptyDiv");
@@ -89,10 +94,11 @@ function renderCoinObj(coin) {
   increaseBtn.addEventListener("click", (event) => {
     for (let element of currentUsd) {
       element += currentUsd[currentUsd.length - 1];
+      coinCounter++;
       currentUsd.push(element);
       console.log("this is last value:", currentUsd[currentUsd.length - 1]);
       console.log("this is array:", currentUsd);
-      p.innerHTML = `${ticker}  $ <span>${
+      p.innerHTML = `${coinCounter} ${ticker} Coin(s) $ <span>${
         currentUsd[currentUsd.length - 1]
       }<br></span>`;
       return;
@@ -100,7 +106,7 @@ function renderCoinObj(coin) {
   });
   spanCurrent.textContent = `${currentUsd[currentUsd.length - 1]}`;
 
-  p.innerHTML = `${ticker}  $ <span>${
+  p.innerHTML = `${coinCounter} ${ticker} Coin(s) $ <span>${
     currentUsd[currentUsd.length - 1]
   }<br></span>`;
 
@@ -160,7 +166,7 @@ function renderCoinObj(coin) {
 //     event.target.parentNode.remove();
 //   });
 // }
-
+//****************************************************************** */
 function getWeeklyValue(coinValue, dropValue) {
   // var request = require("request");
   var url = `https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_WEEKLY&symbol=${coinValue}&market=USD&apikey=6MHEHPP7MI5FPCOG`;
@@ -175,13 +181,14 @@ function getWeeklyValue(coinValue, dropValue) {
     .then((data) => {
       console.log(data);
       renderWeeklyObj(data, dropValue);
+      renderDelta(coinValue,dropValue);
     })
     .catch((err) => {
       console.log(err.message);
       console.log("API Weekly has an Error");
     });
 }
-
+//****************************************************************** */
 function renderWeeklyObj(coinWeekly, dropValue) {
   const span = document.createElement("span");
   const divP = coinDiv.querySelector("p");
@@ -210,7 +217,7 @@ function renderWeeklyObj(coinWeekly, dropValue) {
 
     span.textContent = currentWeeklyUsd[0];
     divWeekly[divWeekly.length - 1].append(
-      `   Week ending ${week1}:   $`,
+      `   Week ending ${week1}:   $  `,
       span
     );
     // divP.append(pWeekly);
@@ -223,7 +230,7 @@ function renderWeeklyObj(coinWeekly, dropValue) {
 
     span.textContent = currentWeeklyUsd[0];
     divWeekly[divWeekly.length - 1].append(
-      `   Week ending ${week2}:   $`,
+      `   Week ending ${week2}:   $  `,
       span
     );
   } else if (dropValue === "3 weeks ago") {
@@ -235,7 +242,7 @@ function renderWeeklyObj(coinWeekly, dropValue) {
 
     span.textContent = currentWeeklyUsd[0];
     divWeekly[divWeekly.length - 1].append(
-      `   Week ending ${week3}:   $`,
+      `   Week ending ${week3}:   $  `,
       span
     );
   } else if (dropValue === "4 weeks ago") {
@@ -247,17 +254,41 @@ function renderWeeklyObj(coinWeekly, dropValue) {
 
     span.textContent = currentWeeklyUsd[0];
     divWeekly[divWeekly.length - 1].append(
-      `   Week ending ${week4}:    $`,
+      `   Week ending ${week4}:    $  `,
       span
     );
   } else {
     console.log("No week Error");
   }
 }
+//****************************************************************** */
 function renderDropdown(weeklyObj) {
   const weeksDrop = document.querySelectorAll(".weeks");
   console.log(weeksDrop);
   for (let i = 0; i < weeksDrop.length; i++) {
     weeksDrop[i].innerText = `Week ${i}`;
   }
+}
+
+function renderDelta(ticker,week){
+  const deltaDiv = document.createElement("div")
+  const parentDeltaDiv = document.querySelector("#delta");
+  const pDelta = document.createElement("p");
+  const pSpan = document.createElement("span");
+  const currentValueSelected = coinDiv.querySelectorAll("span")
+  const weeklyValueSelected = coinDiv.querySelectorAll("span")
+
+   let currentValue = parseFloat(currentValueSelected[currentValueSelected.length-2].textContent)
+  let weeklyValue = parseFloat(weeklyValueSelected[weeklyValueSelected.length-1].textContent)
+
+  let deltaChange = ((currentValue/ weeklyValue) * 100) - 100;
+  
+  pDelta.textContent = `The difference between ${ticker} today and ${week} is `
+  pSpan.textContent = ` ${deltaChange} %`;
+
+  pDelta.append(pSpan)
+  deltaDiv.append(pDelta);
+  parentDeltaDiv.append(deltaDiv);
+  
+
 }

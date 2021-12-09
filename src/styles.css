@@ -1,15 +1,19 @@
 body {
-    font-family: sans-serif;
+    font-family: baskerville;
     background: #2B2B28;
+    padding: 2%;
   }
   h1{
-    color:#F8F8F8
+    color:#F8F8F8;
+    padding-bottom:5%;
+    text-align: center;
   }
   p{
-    color: #F8F8F8
+    color: #F8F8F8;
+    margin:5px;
   }
   span{
-    color: #E3B04B
+    color: #E3B04B;
   }
   .fa-arrow-circle-up{
     color:#F1D6AB;
@@ -20,5 +24,22 @@ body {
     background: #2B2B28;
   }
   .emptyDiv{
-    color: #F8F8F8
+    color: #F8F8F8;
+    
   }
+  #formInput{
+    text-align: center;
+  }
+ #coins div div {
+   margin: 20px;
+   border: 1px solid #F8F8F8;
+ }
+ #delta div {
+  margin: 20px;
+  border: 1px solid #F8F8F8;
+}
+ #coins div .emptyDiv{
+  color: #F8F8F8;
+  border: 1px solid #2B2B28;
+  margin:5px;
+ }
