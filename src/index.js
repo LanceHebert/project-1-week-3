@@ -70,6 +70,7 @@ function renderCoinObj(coin) {
   const increaseBtn = document.createElement("button");
   const spanCurrent = document.createElement("span");
   const emptyDiv = document.createElement("div");
+  const decreaseBtn = document.createElement("button");
   let coinCounter = 1;
   
 
@@ -85,13 +86,16 @@ function renderCoinObj(coin) {
   // console.log(counter);
 
   increaseBtn.innerHTML = `<i class="fas fa-arrow-circle-up">Increase Coin</i>
-   `;
+   `;  
   increaseBtn.style.color = "yellow";
+  decreaseBtn.style.color = "yellow";
+  decreaseBtn.innerHTML = `<i class="fas fa-arrow-circle-up">Increase Coin</i>
+   `;
   removeBtn.innerText = "Delete";
   removeBtn.style.fontSize = "10px";
 
   //Need this to update the original amount somehow
-  increaseBtn.addEventListener("click", (event) => {
+  increaseBtn.addEventListener("click", function something(event){
     for (let element of currentUsd) {
       element += currentUsd[currentUsd.length - 1];
       coinCounter++;
@@ -104,6 +108,12 @@ function renderCoinObj(coin) {
       return;
     }
   });
+  decreaseBtn.addEventListener("click",(e)=>{
+    decreaseCoin(currentUsd,p,coinCounter,ticker)
+  })
+
+
+
   spanCurrent.textContent = `${currentUsd[currentUsd.length - 1]}`;
 
   p.innerHTML = `${coinCounter} ${ticker} Coin(s) $ <span>${
@@ -111,7 +121,7 @@ function renderCoinObj(coin) {
   }<br></span>`;
 
   // p.textContent = ticker + "  $" + currentUsd[currentUsd.length - 1];
-  firstCoinDiv.append(increaseBtn, p, emptyDiv, removeBtn);
+  firstCoinDiv.append(increaseBtn,decreaseBtn, p, emptyDiv, removeBtn);
   coinDiv.append(firstCoinDiv);
   parentCoinDiv.append(coinDiv);
 
@@ -120,52 +130,25 @@ function renderCoinObj(coin) {
     event.target.parentNode.remove();
   });
 }
-// function renderCoinObj(coin) {
-//   const firstCoinDiv = document.createElement('div')
-//   const parentCoinDiv = document.querySelector("#coins");
-//   const p = document.createElement("p");
-//   const removeBtn = document.createElement("button");
-//   const increaseBtn = document.createElement("button");
 
-//   let currentUsd = [];
-//   currentUsd.push(
-//     parseInt(coin["Realtime Currency Exchange Rate"]["5. Exchange Rate"], 10)
-//   );
-//   const ticker =
-//     coin["Realtime Currency Exchange Rate"]["1. From_Currency Code"];
-//   // console.log(counter);
+function decreaseCoin(currentUsd,p,coinCounter,ticker){
+  
+  console.log("HERE I AM ********",currentUsd);
+  
+  for (let element of currentUsd) {
+    // [currentUsd.length - 1] -= currentUsd[0]
+    --coinCounter;    
+    currentUsd.pop(currentUsd);
+    console.log("this is last value:", currentUsd[currentUsd.length - 1]);
+    console.log("this is array:", currentUsd);
+    p.innerHTML = `${coinCounter} ${ticker} Coin(s) $ <span>${
+      currentUsd[currentUsd.length - 1]
+    }<br></span>`;
+    
+  }
+}
 
-//   increaseBtn.innerHTML = `<i class="fas fa-arrow-circle-up">Increase Coin</i>
-//   `;
-//   increaseBtn.style.color = "yellow";
-//   removeBtn.innerText = "Delete";
-//   removeBtn.style.fontSize = "10px";
-//   spanCurrentUsd.textContent = currentUsd[currentUsd.length - 1];
-//   spanCurrentUsd.style.color = "#E3B04B";
 
-//   //Need this to update the original amount somehow
-//   increaseBtn.addEventListener("click", (event) => {
-//     for (let element of currentUsd) {
-//       element += currentUsd[currentUsd.length - 1];
-//       currentUsd.push(element);
-//       // console.log("this is last value:", currentUsd[currentUsd.length - 1].value);
-//       // console.log("this is array:", currentUsd);
-//       p.textContent = `${ticker}  $ ${spanCurrentUsd}`;
-//       return;
-//     }
-//   });
-//   p.append(spanCurrentUsd);
-//   p.textContent = `${ticker} $`;
-//   // p.textContent = ticker + "  $" + currentUsd[currentUsd.length - 1];
-//   firstCoinDiv.append(increaseBtn, p, removeBtn);
-//   coinDiv.append(firstCoinDiv);
-//   parentCoinDiv.append(coinDiv);
-
-//   //remove the coin
-//   removeBtn.addEventListener("click", (event) => {
-//     event.target.parentNode.remove();
-//   });
-// }
 //****************************************************************** */
 function getWeeklyValue(coinValue, dropValue) {
   // var request = require("request");
