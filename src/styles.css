@@ -1,3 +1,18 @@
 body {
     font-family: sans-serif;
+    background: #2B2B28;
+  }
+  p{
+    color: #F8F8F8
+  }
+  span{
+    color: #E3B04B
+  }
+  .fa-arrow-circle-up{
+    color:#F1D6AB;
+    background: #2B2B28;
+  }
+  button{
+    color: #F1D6AB;
+    background: #2B2B28;
   }
