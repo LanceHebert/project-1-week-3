@@ -266,6 +266,7 @@ function renderDelta(ticker, week) {
   const coinDivId = document.querySelector("#coins")
   const currentValueSelected = coinDivId.querySelectorAll("span");
   const weeklyValueSelected = coinDivId.querySelectorAll("span");
+  const pPercent = document.createElement("span")
   console.log(currentValueSelected);
   
 
@@ -277,7 +278,7 @@ function renderDelta(ticker, week) {
   );
 
   let deltaChange = (currentValue / weeklyValue) * 100 - 100;
-
+  pPercent.textContent="%"
   pDelta.textContent = `The difference between ${ticker} today and ${week} is `;
   pSpan.textContent = deltaChange ;
   deltaDiv.classList.add("card")
@@ -290,7 +291,7 @@ function renderDelta(ticker, week) {
   
   
 
-  pDelta.append(pSpan);
+  pDelta.append(pSpan,pPercent);
   deltaDiv.append(pDelta);
   parentDeltaDiv.append(deltaDiv);
 }
@@ -324,14 +325,14 @@ function renderVerdict(){
       console.log("Not better than the king");
     }    
   })  
-  if(deltaSpans.length > 1 && deltaSpans.length < 3 )
+  if(deltaSpans.length > 2 && deltaSpans.length <= 4 )
   {  
   spanVerdict.textContent = kingSpan
   pVerdict.innerHTML = `Out of these coins,<span> ${splitArray[3].toUpperCase()} </span> was the best investment ${splitArray[6]} ${splitArray[7]} ${splitArray[8]}  with a gain of <span>${spanVerdict.textContent}%</span>`
   divVerdict.append(pVerdict);
   parentVerdictDiv.append(divVerdict);
   }
-  else if (deltaSpans.length > 2)
+  else if (deltaSpans.length > 4)
   {
     p.parentNode.remove();
     spanVerdict.textContent = kingSpan
