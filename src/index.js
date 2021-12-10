@@ -122,13 +122,29 @@ function renderCoinObj(coin) {
 
   //remove the coin
   removeBtn.addEventListener("click", (event) => {
-    event.target.parentNode.remove();
+    
     // event.target.indexOf(event.target.parentNode)
     // console.log("index",event.target.indexOf(event.target.parentNode));
-    // const divIndex = document.querySelectorAll(".targetThis")
-    // const deltaDivIndex = document.querySelectorAll("#delta div")
-    // debugger;
-    // const divFind = divIndex.find((slice)=>{event.target.parentNode === slice})
+    const divIndex = document.querySelectorAll(".targetThis")
+    const deltaDivIndex = document.querySelectorAll("#delta div")
+    const divIndexArray = Array.from(divIndex)
+    // const deltaDivIndexArray = Array.from(divIndex)
+
+    divIndexArray.forEach((slice)=>{
+      if(event.target.parentNode === slice)
+      {
+        const indexNumber = divIndexArray.indexOf(slice)
+        console.log(deltaDivIndex[indexNumber]);
+        deltaDivIndex[indexNumber].remove()
+      }
+      else{
+        console.log("Nothing is here or you messed up");
+        event.target.parentNode.remove();
+      }
+    })
+    
+    
+    event.target.parentNode.remove();
   });
 }
 
@@ -148,10 +164,12 @@ function getWeeklyValue(coinValue, dropValue) {
       console.log(data);
       renderWeeklyObj(data, dropValue);
       renderDelta(coinValue, dropValue);
+      renderVerdict();
     })
     .catch((err) => {
       console.log(err.message);
       console.log("API Weekly has an Error");
+      alert("API LIMIT REACHED-- REFRESH PAGE AND TRY AGAIN")
     });
 }
 //****************************************************************** */
@@ -254,11 +272,54 @@ function renderDelta(ticker, week) {
   let deltaChange = (currentValue / weeklyValue) * 100 - 100;
 
   pDelta.textContent = `The difference between ${ticker} today and ${week} is `;
-  pSpan.textContent = ` ${deltaChange} %`;
+  pSpan.textContent = deltaChange ;
 
   pDelta.append(pSpan);
   deltaDiv.append(pDelta);
   parentDeltaDiv.append(deltaDiv);
-  
+}
 
+function renderVerdict(){
+  const divVerdict = document.createElement("div");
+  const pVerdict = document.createElement("p");
+  const spanVerdict = document.createElement("span");
+  const parentVerdictDiv = document.querySelector("#verdict");
+  const deltaParentDiv = document.querySelector("#delta");
+  const deltaSpans = deltaParentDiv.querySelectorAll("span");
+  // const deltaSelected = 
+  let kingSpan = -9999999999;
+  let splitArray = []
+
+  deltaSpans.forEach((span)=>{ 
+    console.log("inside foreach",typeof span.textContent);   
+    if(parseFloat(span.textContent) > kingSpan)
+    {
+      kingSpan = parseFloat(span.textContent);
+      splitArray = span.parentNode.innerText.split(" ");
+
+      console.log("THIS IS IT",splitArray);      
+    }
+    else if (parseFloat(span.textContent) === kingSpan)
+    {
+      kingSpan = "no one, it is a tie."
+    }
+    else{
+      console.log("Not better than the king");
+    }    
+  })  
+  if(deltaSpans.length > 1 && deltaSpans.length < 3 )
+  {  
+  spanVerdict.textContent = kingSpan
+  pVerdict.innerHTML = `Out of these coins,<span> ${splitArray[3].toUpperCase()} </span> was the best investment ${splitArray[6]} ${splitArray[7]} ${splitArray[8]}  with a gain of <span>${spanVerdict.textContent}%</span>`
+  divVerdict.append(pVerdict);
+  parentVerdictDiv.append(divVerdict);
+  }
+  else if (deltaSpans.length > 2)
+  {
+    p.parentNode.remove();
+    spanVerdict.textContent = kingSpan
+    pVerdict.textContent = `Out of these coins,  ${spanVerdict.textContent}`
+    divVerdict.append(pVerdict);
+    parentVerdictDiv.append(divVerdict);
+  } 
 }
