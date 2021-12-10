@@ -1,7 +1,9 @@
-body {
+html ,body{
     font-family: baskerville;
     background: #F1D6AB;
     text-align: center;
+    min-height:100%;
+    height:100%; 
     }
   h1{
     color:#F8F8F8;
@@ -33,11 +35,11 @@ body {
     color: #F8F8F8;    
   }  
   #container{
-    padding: 3%;    
+    padding: 0% 3%;   
   }
   #formInput{
     text-align: center;
-    padding: 5% 1%;
+    padding: 50px 1%;
   }
 
  #coins div div {
@@ -55,9 +57,11 @@ body {
   font-size:30px;
   text-align: center;
   
+  
 }
 #verdictSection{
   background-color: #2B2B28;
+  
 }
 .nav{
   background-color: #2B2B28;
@@ -80,4 +84,11 @@ body {
 }
 #coins{
   width:45rem;
+}
+#footer {
+  position:fixed;
+  bottom:0;
+  width:100%;
+  height:60px;   /* Height of the footer */
+  background:#2B2B28;
 }

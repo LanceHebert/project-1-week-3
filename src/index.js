@@ -279,7 +279,7 @@ function renderDelta(ticker, week) {
 
   let deltaChange = (currentValue / weeklyValue) * 100 - 100;
   pPercent.textContent="%"
-  pDelta.textContent = `The difference between ${ticker} today and ${week} is `;
+  pDelta.textContent = `The difference between ${ticker.toUpperCase()} today and ${week} is `;
   pSpan.textContent = deltaChange ;
   deltaDiv.classList.add("card")
   deltaDiv.style.width ="45rem";
@@ -329,6 +329,7 @@ function renderVerdict(){
   {  
   spanVerdict.textContent = kingSpan
   pVerdict.innerHTML = `Out of these coins,<span> ${splitArray[3].toUpperCase()} </span> was the best investment ${splitArray[6]} ${splitArray[7]} ${splitArray[8]}  with a gain of <span>${spanVerdict.textContent}%</span>`
+  parentVerdictDiv.parentNode.style.height="200px"
   divVerdict.append(pVerdict);
   parentVerdictDiv.append(divVerdict);
   }
@@ -337,6 +338,7 @@ function renderVerdict(){
     p.parentNode.remove();
     spanVerdict.textContent = kingSpan
     pVerdict.textContent = `Out of these coins,  ${spanVerdict.textContent}`
+    parentVerdictDiv.parentNode.style.height="200px"
     divVerdict.append(pVerdict);
     parentVerdictDiv.append(divVerdict);
   } 
