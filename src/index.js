@@ -17,6 +17,11 @@
 //**************************************************** */
 //adds event listener, sends ticker to fetch request.
 
+//B3BGRQPX1AOZLTLP
+//6MHEHPP7MI5FPCOG
+//2RNKGNY0ABJEY1NF
+//GDBQ566T4H3VOIJ5
+
 coinInput();
 //****************************************************************** */
 function coinInput() {
@@ -38,7 +43,7 @@ function coinInput() {
 //****************************************************************** */
 function getAPI(coinValue, dropValue) {
   // var request = require("request");
-  var url = `https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${coinValue}&to_currency=USD&apikey=6MHEHPP7MI5FPCOG`;
+  var url = `https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${coinValue}&to_currency=USD&apikey=GDBQ566T4H3VOIJ5`;
   // request.get(
   fetch(url, {
     url: url,
@@ -48,7 +53,9 @@ function getAPI(coinValue, dropValue) {
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
+     
       renderCoinObj(data);
+      
       getWeeklyValue(coinValue, dropValue);
       
     })
@@ -68,91 +75,67 @@ function renderCoinObj(coin) {
   const p = document.createElement("p");
   const removeBtn = document.createElement("button");
   const increaseBtn = document.createElement("button");
-  const spanCurrent = document.createElement("span");
+  // const spanCurrent = document.createElement("span");
   const emptyDiv = document.createElement("div");
   const decreaseBtn = document.createElement("button");
   let coinCounter = 1;
-  
 
   p.classList.add("pClass");
-  let currentUsd = [];
-  currentUsd.push(
-    parseFloat(coin["Realtime Currency Exchange Rate"]["5. Exchange Rate"],10)
-  );
-  // let counter = 1;
+  let currentUsd = parseFloat(coin["Realtime Currency Exchange Rate"]["5. Exchange Rate"],10);
+  
   emptyDiv.classList.add("emptyDiv");
+  firstCoinDiv.classList.add("targetThis");
   const ticker =
     coin["Realtime Currency Exchange Rate"]["1. From_Currency Code"];
   // console.log(counter);
 
   increaseBtn.innerHTML = `<i class="fas fa-arrow-circle-up">Increase Coin</i>
-   `;  
-  increaseBtn.style.color = "yellow";
-  decreaseBtn.style.color = "yellow";
-  decreaseBtn.innerHTML = `<i class="fas fa-arrow-circle-up">Increase Coin</i>
+   `;    
+  decreaseBtn.innerHTML = `<i class="fas fa-arrow-circle-down">Decrease Coin</i>
    `;
   removeBtn.innerText = "Delete";
   removeBtn.style.fontSize = "10px";
 
   //Need this to update the original amount somehow
-  increaseBtn.addEventListener("click", function something(event){
-    for (let element of currentUsd) {
-      element += currentUsd[currentUsd.length - 1];
-      coinCounter++;
-      currentUsd.push(element);
-      console.log("this is last value:", currentUsd[currentUsd.length - 1]);
-      console.log("this is array:", currentUsd);
-      p.innerHTML = `${coinCounter} ${ticker} Coin(s) $ <span>${
-        currentUsd[currentUsd.length - 1]
-      }<br></span>`;
-      return;
-    }
+  increaseBtn.addEventListener("click", (event) => {
+    coinCounter++;
+    let totalUsd = currentUsd * coinCounter;
+    console.log("this is array:", currentUsd);
+    p.innerHTML = `${coinCounter} ${ticker} Coin(s) $ <span>${totalUsd}<br></span>`;
   });
-  decreaseBtn.addEventListener("click",(e)=>{
-    decreaseCoin(currentUsd,p,coinCounter,ticker)
-  })
 
+  decreaseBtn.addEventListener("click", (e) => {
+    let totalSubUsd = currentUsd * coinCounter;
+    coinCounter = coinCounter - 1;
+    totalSubUsd = totalSubUsd - currentUsd;
+    p.innerHTML = `${coinCounter} ${ticker} Coin(s) $ <span>${totalSubUsd}<br></span>`;
+  });
 
+  // spanCurrent.textContent = `${currentUsd[currentUsd.length - 1]}`;
 
-  spanCurrent.textContent = `${currentUsd[currentUsd.length - 1]}`;
-
-  p.innerHTML = `${coinCounter} ${ticker} Coin(s) $ <span>${
-    currentUsd[currentUsd.length - 1]
-  }<br></span>`;
+  p.innerHTML = `${coinCounter} ${ticker} Coin(s) $ <span>${currentUsd}<br></span>`;
 
   // p.textContent = ticker + "  $" + currentUsd[currentUsd.length - 1];
-  firstCoinDiv.append(increaseBtn,decreaseBtn, p, emptyDiv, removeBtn);
+  firstCoinDiv.append(increaseBtn, decreaseBtn, p, emptyDiv, removeBtn);
   coinDiv.append(firstCoinDiv);
   parentCoinDiv.append(coinDiv);
 
   //remove the coin
   removeBtn.addEventListener("click", (event) => {
     event.target.parentNode.remove();
+    // event.target.indexOf(event.target.parentNode)
+    // console.log("index",event.target.indexOf(event.target.parentNode));
+    // const divIndex = document.querySelectorAll(".targetThis")
+    // const deltaDivIndex = document.querySelectorAll("#delta div")
+    // debugger;
+    // const divFind = divIndex.find((slice)=>{event.target.parentNode === slice})
   });
 }
-
-function decreaseCoin(currentUsd,p,coinCounter,ticker){
-  
-  console.log("HERE I AM ********",currentUsd);
-  
-  for (let element of currentUsd) {
-    // [currentUsd.length - 1] -= currentUsd[0]
-    --coinCounter;    
-    currentUsd.pop(currentUsd);
-    console.log("this is last value:", currentUsd[currentUsd.length - 1]);
-    console.log("this is array:", currentUsd);
-    p.innerHTML = `${coinCounter} ${ticker} Coin(s) $ <span>${
-      currentUsd[currentUsd.length - 1]
-    }<br></span>`;
-    
-  }
-}
-
 
 //****************************************************************** */
 function getWeeklyValue(coinValue, dropValue) {
   // var request = require("request");
-  var url = `https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_WEEKLY&symbol=${coinValue}&market=USD&apikey=6MHEHPP7MI5FPCOG`;
+  var url = `https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_WEEKLY&symbol=${coinValue}&market=USD&apikey=2RNKGNY0ABJEY1NF`;
   //https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_WEEKLY&symbol=BTC&market=CNY&apikey=demo
   // request.get(
   fetch(url, {
@@ -164,7 +147,7 @@ function getWeeklyValue(coinValue, dropValue) {
     .then((data) => {
       console.log(data);
       renderWeeklyObj(data, dropValue);
-      renderDelta(coinValue,dropValue);
+      renderDelta(coinValue, dropValue);
     })
     .catch((err) => {
       console.log(err.message);
@@ -253,23 +236,27 @@ function renderDropdown(weeklyObj) {
   }
 }
 
-function renderDelta(ticker,week){
-  const deltaDiv = document.createElement("div")
+function renderDelta(ticker, week) {
+  const deltaDiv = document.createElement("div");
   const parentDeltaDiv = document.querySelector("#delta");
   const pDelta = document.createElement("p");
   const pSpan = document.createElement("span");
-  const currentValueSelected = coinDiv.querySelectorAll("span")
-  const weeklyValueSelected = coinDiv.querySelectorAll("span")
+  const currentValueSelected = coinDiv.querySelectorAll("span");
+  const weeklyValueSelected = coinDiv.querySelectorAll("span");
 
-   let currentValue = parseFloat(currentValueSelected[currentValueSelected.length-2].textContent)
-  let weeklyValue = parseFloat(weeklyValueSelected[weeklyValueSelected.length-1].textContent)
+  let currentValue = parseFloat(
+    currentValueSelected[currentValueSelected.length - 2].textContent
+  );
+  let weeklyValue = parseFloat(
+    weeklyValueSelected[weeklyValueSelected.length - 1].textContent
+  );
 
-  let deltaChange = ((currentValue/ weeklyValue) * 100) - 100;
-  
-  pDelta.textContent = `The difference between ${ticker} today and ${week} is `
+  let deltaChange = (currentValue / weeklyValue) * 100 - 100;
+
+  pDelta.textContent = `The difference between ${ticker} today and ${week} is `;
   pSpan.textContent = ` ${deltaChange} %`;
 
-  pDelta.append(pSpan)
+  pDelta.append(pSpan);
   deltaDiv.append(pDelta);
   parentDeltaDiv.append(deltaDiv);
   
