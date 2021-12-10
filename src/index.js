@@ -67,10 +67,10 @@ function getAPI(coinValue, dropValue) {
 
 //show the coin chosen
 
-const coinDiv = document.createElement("div");
+
 //****************************************************************** */
 function renderCoinObj(coin) {
-  const firstCoinDiv = document.createElement("div");
+  // const firstCoinDiv = document.createElement("div");
   const parentCoinDiv = document.querySelector("#coins");
   const p = document.createElement("p");
   const removeBtn = document.createElement("button");
@@ -78,13 +78,17 @@ function renderCoinObj(coin) {
   // const spanCurrent = document.createElement("span");
   const emptyDiv = document.createElement("div");
   const decreaseBtn = document.createElement("button");
+  const coinDiv = document.createElement("div");
   let coinCounter = 1;
 
   p.classList.add("pClass");
   let currentUsd = parseFloat(coin["Realtime Currency Exchange Rate"]["5. Exchange Rate"],10);
   
+  coinDiv.classList.add("card")
+  coinDiv.classList.add("targetThis")
+  coinDiv.style.width = "45rem";
   emptyDiv.classList.add("emptyDiv");
-  firstCoinDiv.classList.add("targetThis");
+  // firstCoinDiv.classList.add("targetThis");
   const ticker =
     coin["Realtime Currency Exchange Rate"]["1. From_Currency Code"];
   // console.log(counter);
@@ -94,7 +98,7 @@ function renderCoinObj(coin) {
   decreaseBtn.innerHTML = `<i class="fas fa-arrow-circle-down">Decrease Coin</i>
    `;
   removeBtn.innerText = "Delete";
-  removeBtn.style.fontSize = "10px";
+  
 
   //Need this to update the original amount somehow
   increaseBtn.addEventListener("click", (event) => {
@@ -116,8 +120,8 @@ function renderCoinObj(coin) {
   p.innerHTML = `${coinCounter} ${ticker} Coin(s) $ <span>${currentUsd}<br></span>`;
 
   // p.textContent = ticker + "  $" + currentUsd[currentUsd.length - 1];
-  firstCoinDiv.append(increaseBtn, decreaseBtn, p, emptyDiv, removeBtn);
-  coinDiv.append(firstCoinDiv);
+  coinDiv.append(increaseBtn, decreaseBtn, p, emptyDiv, removeBtn);  
+  // coinDiv.append(firstCoinDiv)
   parentCoinDiv.append(coinDiv);
 
   //remove the coin
@@ -175,7 +179,7 @@ function getWeeklyValue(coinValue, dropValue) {
 //****************************************************************** */
 function renderWeeklyObj(coinWeekly, dropValue) {
   const span = document.createElement("span");
-  const divP = coinDiv.querySelector("p");
+  // const divP = coinDiv.querySelector("p");
   const divWeekly = document.querySelectorAll(".emptyDiv");
 
   const date = new Date();
@@ -253,14 +257,17 @@ function renderDropdown(weeklyObj) {
     weeksDrop[i].innerText = `Week ${i}`;
   }
 }
-
+//****************************************************************** */
 function renderDelta(ticker, week) {
   const deltaDiv = document.createElement("div");
   const parentDeltaDiv = document.querySelector("#delta");
   const pDelta = document.createElement("p");
   const pSpan = document.createElement("span");
-  const currentValueSelected = coinDiv.querySelectorAll("span");
-  const weeklyValueSelected = coinDiv.querySelectorAll("span");
+  const coinDivId = document.querySelector("#coins")
+  const currentValueSelected = coinDivId.querySelectorAll("span");
+  const weeklyValueSelected = coinDivId.querySelectorAll("span");
+  console.log(currentValueSelected);
+  
 
   let currentValue = parseFloat(
     currentValueSelected[currentValueSelected.length - 2].textContent
@@ -273,6 +280,15 @@ function renderDelta(ticker, week) {
 
   pDelta.textContent = `The difference between ${ticker} today and ${week} is `;
   pSpan.textContent = deltaChange ;
+  deltaDiv.classList.add("card")
+  deltaDiv.style.width ="45rem";
+  deltaDiv.style.height ="320px"
+  deltaDiv.style.fontSize ="2rem"
+  deltaDiv.style.padding ="125px,0px";
+  deltaDiv.style.textAlign="center";
+  deltaDiv.style.paddingTop="10%"
+  
+  
 
   pDelta.append(pSpan);
   deltaDiv.append(pDelta);
@@ -286,6 +302,7 @@ function renderVerdict(){
   const parentVerdictDiv = document.querySelector("#verdict");
   const deltaParentDiv = document.querySelector("#delta");
   const deltaSpans = deltaParentDiv.querySelectorAll("span");
+  
   // const deltaSelected = 
   let kingSpan = -9999999999;
   let splitArray = []

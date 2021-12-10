@@ -1,12 +1,13 @@
 body {
     font-family: baskerville;
-    background: #2B2B28;
-    padding: 2%;
-  }
+    background: #F1D6AB;
+    text-align: center;
+    }
   h1{
     color:#F8F8F8;
-    padding-bottom:5%;
+    padding:3% 0%;
     text-align: center;
+    background-color: #2B2B28
   }
   p{
     color: #F8F8F8;
@@ -26,24 +27,57 @@ body {
   button{
     color: #F1D6AB;
     background: #2B2B28;
+    margin:5px 200px;
   }
   .emptyDiv{
-    color: #F8F8F8;
-    
+    color: #F8F8F8;    
+  }  
+  #container{
+    padding: 3%;    
   }
   #formInput{
     text-align: center;
+    padding: 5% 1%;
   }
+
  #coins div div {
-   margin: 20px;
-   border: 1px solid #F8F8F8;
+   margin: 20px;   
  }
- #delta div {
-  margin: 20px;
-  border: 1px solid #F8F8F8;
-}
+
  #coins div .emptyDiv{
   color: #F8F8F8;
   border: 1px solid #2B2B28;
   margin:5px;
  }
+ #verdict{
+  margin: 20px;
+  /* border: 1px solid #F8F8F8; */
+  font-size:30px;
+  text-align: center;
+  
+}
+#verdictSection{
+  background-color: #2B2B28;
+}
+.nav{
+  background-color: #2B2B28;
+  
+}
+.card{
+  background-color: #2B2B28;  
+  border:5px solid #E3B04B;  
+  /* margin:auto; */
+  margin: 20px;   
+}
+.targetThis{
+ 
+  background-color: #2B2B28;
+  font-size:2rem;
+
+}
+.col{
+  width:45rem;
+}
+#coins{
+  width:45rem;
+}
