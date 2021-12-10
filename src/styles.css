@@ -18,6 +18,9 @@ html ,body{
   span{
     color: #E3B04B;
   }
+  #formInput{
+    font-size: 1.3rem;
+  }
   .fa-arrow-circle-up{
     color:#F1D6AB;
     background: #2B2B28;
