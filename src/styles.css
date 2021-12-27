@@ -72,7 +72,7 @@ html ,body{
 }
 .card{
   background-color: #2B2B28;  
-  border:5px solid #E3B04B;  
+  border:3px solid #E3B04B;  
   /* margin:auto; */
   margin: 20px;   
 }
